@@ -1,0 +1,68 @@
+START
+
+# Given two numbers, numberOne and numberTwo #
+
+RETURN numberOne plus numberTwo
+
+END
+
+START
+
+# Given an array of strings, strings #
+
+SET mergedStrings to an empty string
+FOR EACH in strings
+  Add string to the end of mergedStrings
+
+RETURN mergedStrings
+
+END
+
+START
+
+# Given an array of integers, givenInts #
+
+SET newArray to an empty array
+
+FOR (givenInts)
+  IF interator is an odd number
+    Add givenInts[i] to the newArray
+  ELSE
+    do nothing, keep looping
+
+RETURN newArray
+
+END
+
+START
+
+# Given a string, givenString, and a character, givenCharacter #
+
+SET charOccurances to 0
+
+FOR the length of givenString
+  IF the current character is givenCharacter, increase charOccurances by numberOne
+  IF charOccurances is three
+    RETURN the current index
+  
+IF the loop finishes and charOccurances is not three
+  RETURN null
+
+END
+
+START
+
+# Given two arrays of numbers, arrayOne and arrayTwo #
+
+SET combinedArrays to an empty array
+
+FOR the combined length of the arrays, minus two to account for zero-indexing
+SET adjustedIndex to index divided by two, rounded down
+  IF index is zero or even
+    SET combinedArrays[i] to arrayOne[adjustedIndex]
+  ELSE
+    SET combinedArrays[i] to arrayTwo[adjustedIndex]
+
+RETURN combinedArrays
+
+END
