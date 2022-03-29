@@ -1,0 +1,7 @@
+{
+  "en": {
+    "welcome": "Welcome to calculator!",
+    "firstPrompt": "Please enter the first number.",
+    "secondPrompt": "Please enter the second number."
+  }
+}
