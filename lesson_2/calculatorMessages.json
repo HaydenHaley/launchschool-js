@@ -1,7 +1,24 @@
 {
   "en": {
     "welcome": "Welcome to calculator!",
-    "firstPrompt": "Please enter the first number.",
-    "secondPrompt": "Please enter the second number."
+    "firstprompt": "Please enter the first number.",
+    "secondprompt": "Please enter the second number.",
+    "operationprompt": "What operation would you like to perform?\n1) Add \n2) Subtract \n3) Multiply \n4) Divide",
+    "result": "Your result was:",
+    "repeatprompt": "Would you like to make another calculation? Type y if so, or n to exit.",
+    "goodbye": "Goodbye!",
+    "invalidnumber": "Sorry, that isn't a valid number.",
+    "invalidoperation": "Sorry, that's not a valid operation type."
+  },
+  "es": {
+    "welcome": "Welcome to calculator!",
+    "firstprompt": "Please enter the first number.",
+    "secondprompt": "Please enter the second number.",
+    "operationprompt": "What operation would you like to perform?\n1) Add \n2) Subtract \n3) Multiply \n4) Divide",
+    "result": "Your result was:",
+    "repeatprompt": "Would you like to make another calculation? Type y if so, or n to exit.",
+    "goodbye": "Goodbye!",
+    "invalidnumber": "Sorry, that isn't a valid number.",
+    "invalidoperation": "Sorry, that's not a valid operation type."
   }
 }

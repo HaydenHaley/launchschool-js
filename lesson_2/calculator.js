@@ -1,11 +1,26 @@
 const readline = require('readline-sync');
 const fs = require('fs');
-const language = process.argv[2] ? process.argv[2] : 'en';
 
-function prompt(message) {
+// if the user gave a particular language, launches in that language.
+// otherwise, picks the OS language.
+const LANGUAGE = process.argv[2] ??
+                  Intl.DateTimeFormat()
+                  .resolvedOptions()
+                  .locale.split('-')[0];
+
+const MESSAGES = require('./calculatorMessages.json');
+
+function prompt(message, extraArg) {
   // gets string by the current language type
-  let messageText = languageInfo[language][message];
-  console.log(`=> ${messageText}`);
+  let messageText = MESSAGES[LANGUAGE][message];
+  if (messageText === undefined) {
+    console.log(`There was no message value for the key ${message} in language ${LANGUAGE}.`);
+    return;
+  }
+  if (extraArg)
+    console.log(`=> ${messageText} ${extraArg}`);
+  else
+    console.log(`=> ${messageText}`);
 }
 
 function isValidNumber(number){
@@ -19,7 +34,7 @@ function getValidNumber() {
     if (isValidNumber(number)) {
       return Number(number);
     } else {
-      prompt("Sorry, that isn't a valid number.");
+      prompt('invalidnumber');
       number = undefined;
     }
   }
@@ -27,30 +42,26 @@ function getValidNumber() {
 
 /* program starts here */
 
-// checks if the language has a config file. if not, prints an error message. If undefined, sets to the default, english.
-// If no config file exists at all, warn the user and quit.
+if (MESSAGES[LANGUAGE] === undefined) {
+  console.log(`Could not read data for language ${LANGUAGE}.`);
+  process.exit();
+}
 
-let languageFile = fs.readFileSync('calculatorMessages.json');
-let languageInfo = JSON.parse(languageFile);
-
-console.log(`The selected language is ${language}`);
-prompt("Welcome to Calculator!");
+prompt('welcome');
 
 let wantsToContinue = true;
 while (wantsToContinue) {
-  prompt("What's the first number?");
+  prompt('firstprompt');
   let firstNumber = getValidNumber();
-  prompt(`Great! You entered ${firstNumber}.`);
 
-  prompt("What's the second number?");
+  prompt('secondprompt');
   let secondNumber = getValidNumber();
-  prompt(`Great! You entered ${secondNumber}.`);
 
   let operation;
   let output;
 
   while (output === undefined) {
-    prompt('What operation would you like to perform?\n1) Add \n2) Subtract \n3) Multiply \n4) Divide');
+    prompt('operationprompt');
     operation = readline.questionInt();
     switch (operation) {
       case 1:
@@ -66,13 +77,14 @@ while (wantsToContinue) {
         output = firstNumber / secondNumber;
         break;
       default: 
-        prompt('Sorry, that\'s not a valid operation type.');
+        prompt('invalidoperation');
         break;
     }
   } 
 
-  prompt(`Result: ${output}. Would you like to make another calculation? Enter y to continue, or n otherwise.`);
+  prompt('result', output);
+  prompt('repeatprompt');
   wantsToContinue = readline.question() === 'y';
 }
 
-prompt("Goodbye!");
+prompt('goodbye');
