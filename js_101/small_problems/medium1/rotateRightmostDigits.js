@@ -1,0 +1,3 @@
+function rotateRightmostDigits(digits, count) {
+  
+}
