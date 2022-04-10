@@ -1,3 +1,0 @@
-function rotateRightmostDigits(digits, count) {
-  
-}
