@@ -13,5 +13,5 @@ function checkHandValue(hand) {
 }
 
 /* 
-Player is shown their hand, 
+Player is shown their hand, offered the ability to hit or stay.
 */
