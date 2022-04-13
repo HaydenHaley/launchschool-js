@@ -57,13 +57,21 @@ function getValidResponse() {
     }
 
     // checks if the space is already filled
-    if (entries[response[0]][response[1]] !== EMPTY) {
+    if (!isValidMove(response[0], response[1])) {
       response = null;
       console.log('Sorry, that space is already taken.');
     }
 
   }
   return response;
+}
+
+function isValidMove(row, column) {
+  return entries[row][column] === EMPTY;
+}
+
+function placeTile(row, column, character) {
+  entries[row][column] = character;
 }
 
 function checkGameEnd() {
@@ -73,21 +81,21 @@ function checkGameEnd() {
     // checks rows
     for (let index = 0; index < 3; index++) {
       checked = [entries[index][0], entries[index][1], entries[index][2]];
-      if (checked.every(val => val !== EMPTY)) return checked[0];
+      if (checked.every(val => val !== EMPTY && val === checked[0])) return checked[0];
     }
 
     // checks columns
     for (let index = 0; index < 3; index++) {
       checked = [entries[0][index], entries[1][index], entries[2][index]];
-      if (checked.every(val => val !== EMPTY)) return checked[0];
+      if (checked.every(val => val !== EMPTY && val === checked[0])) return checked[0];
     }
 
     // checks diagonals
     checked = [entries[0][0], entries[1][1], entries[2][2]];
-    if (checked.every(val => val !== EMPTY)) return checked[0];
+    if (checked.every(val => val !== EMPTY && val === checked[0])) return checked[0];
 
     checked = [entries[0][2], entries[1][1], entries[2][0]];
-    if (checked.every(val => val !== EMPTY)) return checked[0];
+    if (checked.every(val => val !== EMPTY && val === checked[0])) return checked[0];
 
     // if no match is found, nobody has won yet
     return null;
@@ -113,7 +121,23 @@ function checkGameEnd() {
 }
 
 function computerMove() {
+  // lets start by just picking a random slot
+  // next, we'll have it pick a space that's connected to another O
+  // after that, have it automatically go for anything that makes a row
+  while (true) {
+  let row = Math.floor(Math.random() * 3);
+  let column = Math.floor(Math.random() * 3);
+  if (isValidMove(row, column)) {
+    placeTile(row, column, COMPUTERPICK);
+    break;
+    }
+  }
 
+  /*
+  filters out a list of valid moves
+  checks if any of them would result in a three-row
+  if not, checks if any of them COULD be a a three-row
+  */
 }
 
 // initialize board
@@ -132,13 +156,16 @@ while (playAgain) {
   while (!gameOver) {
 
     let response = getValidResponse();
-    entries[response[0]][response[1]] = PLAYERPICK;
+    placeTile(response[0], response[1], PLAYERPICK);
     displayBoard();
+
     // checks if player won
     gameOver = checkGameEnd();
     if (gameOver) break;
 
     // computer makes a move
+    console.log("The computer is taking their turn...");
+    computerMove();
     displayBoard();
     gameOver = checkGameEnd();
   }
