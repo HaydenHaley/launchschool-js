@@ -23,19 +23,30 @@ class Computer extends Player {
     }
   }
 
-class TTTGame {
+class TTTGame {  
+    static POSSIBLE_WINNING_ROWS = [
+        [ "1", "2", "3" ],            // top row of board
+        [ "4", "5", "6" ],            // center row of board
+        [ "7", "8", "9" ],            // bottom row of board
+        [ "1", "4", "7" ],            // left column of board
+        [ "2", "5", "8" ],            // middle column of board
+        [ "3", "6", "9" ],            // right column of board
+        [ "1", "5", "9" ],            // diagonal: top-left to bottom-right
+        [ "3", "5", "7" ],            // diagonal: bottom-left to top-right
+    ];
+
     constructor() {
-        this.gameBoard = new GameBoard();
         this.humanPlayer = new Human();
         this.computerPlayer = new Computer();
     }
 
     runProgram() {
+        console.clear();
         this.displayWelcomeMessage();
 
         while (true) {
+            this.gameBoard = new GameBoard();
             this.playGameRound();
-            this.gameBoard.display();
             if (!this.playAgain()) break;
         }
 
@@ -52,6 +63,19 @@ class TTTGame {
 
             this.computerMove();
             if (this.isGameOver()) break;
+            console.clear();
+        }
+        console.clear();
+        this.gameBoard.display();
+        let winner = this.checkGameWinner();
+        if (winner === undefined) {
+            console.log("A tie? That's no fun!");
+        } else if (winner === GameBoard.COMPUTER_MARKER) {
+            console.log("Computer wins! Sorry about that.");
+        } else if (winner === GameBoard.HUMAN_MARKER) {
+            console.log("You win! Congratulations!");
+        } else {
+            console.log("An unexpected winner has emerged. This shouldn't happen, please check your code.");
         }
     }
 
@@ -93,12 +117,34 @@ class TTTGame {
 
     isGameOver() {
         // STUB
-        return this.gameBoard.isBoardFull();
+        return this.checkGameWinner() !== undefined || this.gameBoard.isBoardFull();
+    }
+
+    checkGameWinner() {
+        // go through each of the winning rows, check if all of them are filled
+        let winningMarker;
+        TTTGame.POSSIBLE_WINNING_ROWS.forEach(row => {
+            // if we already found a solution, don't bother continuing the loop
+            if (winningMarker !== undefined) return;
+
+            // if every item in the row is the same value
+            let checkedValue = this.gameBoard.boardSpaces[row[0]].marker;
+            if (row.every(rowItem => this.gameBoard.boardSpaces[rowItem].marker === checkedValue)) {
+                if (checkedValue !== GameBoard.EMPTY_SPACE) {
+                    winningMarker = checkedValue;
+                }
+            }
+        });
+        return winningMarker; // will be either a player marker or undefined
     }
 
     playAgain() {
-        // STUB
-        return false;
+        console.log("");
+        console.log("Do you want to play again?");
+        let response = readline.prompt();
+        let wantsToplay = response.toLowerCase() === "y" || response.toLowerCase() === "yes";
+        if (wantsToplay) console.clear();
+        return wantsToplay;
     }
 }
 

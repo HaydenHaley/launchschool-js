@@ -2,5 +2,8 @@
   "dependencies": {
     "fraction.js": "github:infusion/Fraction.js",
     "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0"
   }
 }

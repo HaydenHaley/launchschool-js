@@ -40,10 +40,6 @@ class GameBoard {
         console.log("     |     |");
         console.log("");
     }
-
-    hasLine() {
-        // STUB
-    }
 }
 
 class Square {
